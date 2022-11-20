@@ -6,25 +6,30 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"runtime"
+	"sync"
 
 	"github.com/spf13/viper"
 )
 
-type MD5Grouper struct{}
+type MD5Grouper struct {
+	fileIn chan Type
+	wg     sync.WaitGroup
+}
 
-func (_ *MD5Grouper) md5(t Type) string {
-	fd, err := os.Open(filepath.Join(viper.GetString("file.directory"), t.Name()))
-	if err != nil {
-		return ""
-	}
-	defer fd.Close()
-
+func (mg *MD5Grouper) md5(m map[Any][]Type) {
 	md5Writer := md5.New()
-	if _, err := io.Copy(md5Writer, fd); err != nil {
-		return ""
+	for t := range mg.fileIn {
+		md5Writer.Reset()
+		fd, err := os.Open(filepath.Join(viper.GetString("file.directory"), t.Name()))
+		if err == nil {
+			if _, err := io.Copy(md5Writer, fd); err == nil {
+				appendToMap(m, hex.EncodeToString(md5Writer.Sum(nil)), t)
+			}
+			fd.Close()
+		}
 	}
-
-	return hex.EncodeToString(md5Writer.Sum(nil))
+	mg.wg.Done()
 }
 
 // Group groups elements by its' md5 value. The
@@ -39,11 +44,27 @@ func (mg *MD5Grouper) Group(s []Type) (m map[Any][]Type) {
 		return nil
 	}
 
+	mg.fileIn = make(chan Type)
+
 	m = make(map[Any][]Type)
 
-	for _, t := range s {
-		appendToMap(m, mg.md5(t), t)
+	// Calculate the biggest one.
+	sortBySize(&s)
+
+	// The most efficient number of goroutines
+	// on machine.
+	mg.wg.Add(runtime.NumCPU())
+	for i := 0; i < runtime.NumCPU(); i++ {
+		go mg.md5(m)
 	}
+
+	for _, t := range s {
+		mg.fileIn <- t
+	}
+
+	close(mg.fileIn)
+
+	mg.wg.Wait()
 
 	return m
 }

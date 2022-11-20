@@ -41,8 +41,10 @@ func Table(m map[Any][]Type, keys string) {
 	tb.SetOutputMirror(os.Stdout)
 
 	for k, v := range m {
-		for _, vv := range v {
-			tb.AppendRow(table.Row{trunc(k), vv.Name()})
+		if len(v) > 1 {
+			for _, vv := range v {
+				tb.AppendRow(table.Row{trunc(k), vv.Name()})
+			}
 		}
 	}
 	tb.Render()

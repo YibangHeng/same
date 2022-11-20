@@ -28,8 +28,7 @@ var rootCmd = &cobra.Command{
 				fileList = append(fileList, s...)
 			}
 		}
-		md5Grouper := new(group.MD5Grouper)
-		render.Table(md5Grouper.Group(fileList), "MD5")
+		render.Table(new(group.MD5Grouper).Group(fileList), "MD5")
 	},
 }
 
