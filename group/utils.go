@@ -1,7 +1,6 @@
 package group
 
 import (
-	"sort"
 	"sync"
 )
 
@@ -51,12 +50,4 @@ func dedup(m map[Any][]Type) map[Any][]Type {
 	}
 
 	return m
-}
-
-// sortBySize sorts fileList by file size in descending
-// order.
-func sortBySize(fileList *[]Type) {
-	sort.SliceStable(*fileList, func(i, j int) bool {
-		return (*fileList)[i].GetSize() > (*fileList)[j].GetSize()
-	})
 }

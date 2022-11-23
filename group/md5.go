@@ -46,9 +46,6 @@ func (mg *MD5Grouper) Group(s []Type) (m map[Any][]Type) {
 
 	m = make(map[Any][]Type)
 
-	// Calculate the biggest one.
-	sortBySize(&s)
-
 	// The most efficient number of goroutines
 	// on machine.
 	mg.wg.Add(runtime.NumCPU())
