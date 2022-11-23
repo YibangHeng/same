@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"io/fs"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -12,24 +11,33 @@ import (
 	"github.com/YibangHeng/same/render"
 )
 
+func root(cmd *cobra.Command, args []string) {
+	// If no path specified, use ".".
+	if len(args) == 0 {
+		args = append(args, ".")
+	}
+
+	// Get all files.
+	var fileList []file.FileInfo
+	file.List(&fileList, args...)
+
+	// Find files with same size first.
+	m := new(group.SizeGrouper).Group(fileList)
+	fileList = fileList[0:0]
+	for _, s := range m {
+		fileList = append(fileList, s...)
+	}
+
+	// Find files with same md5 value and render.
+	render.Table(new(group.MD5Grouper).Group(fileList), "MD5")
+}
+
 var rootCmd = &cobra.Command{
 	Use:     "same",
 	Short:   "Scan the same files in the folder",
 	Long:    `Scan the same files in the folder.`,
 	Version: "v0.1.0-dev",
-
-	Run: func(cmd *cobra.Command, args []string) {
-		var fileList []fs.DirEntry
-		file.List(viper.GetString("file.directory"), &fileList)
-		m := new(group.SizeGrouper).Group(fileList)
-		fileList = fileList[0:0]
-		for _, s := range m {
-			if len(s) > 1 {
-				fileList = append(fileList, s...)
-			}
-		}
-		render.Table(new(group.MD5Grouper).Group(fileList), "MD5")
-	},
+	Run:     root,
 }
 
 func Execute() {
@@ -41,7 +49,6 @@ func Execute() {
 
 func init() {
 	// File.
-	rootCmd.Flags().StringP("directory", "d", ".", "Directory to scan")
 	rootCmd.Flags().BoolP("recursive", "r", false, "Scan files recursively")
 
 	// Format.
@@ -51,7 +58,6 @@ func init() {
 	rootCmd.Flags().BoolP("version", "v", false, "Display version")
 	rootCmd.Flags().BoolP("help", "h", false, "Display help")
 
-	_ = viper.BindPFlag("file.directory", rootCmd.Flag("directory"))
 	_ = viper.BindPFlag("file.recursive", rootCmd.Flag("recursive"))
 	_ = viper.BindPFlag("format.no-trunc", rootCmd.Flag("no-trunc"))
 }

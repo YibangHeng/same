@@ -5,11 +5,8 @@ import (
 	"encoding/hex"
 	"io"
 	"os"
-	"path/filepath"
 	"runtime"
 	"sync"
-
-	"github.com/spf13/viper"
 )
 
 type MD5Grouper struct {
@@ -21,7 +18,8 @@ func (mg *MD5Grouper) md5(m map[Any][]Type) {
 	md5Writer := md5.New()
 	for t := range mg.fileIn {
 		md5Writer.Reset()
-		fd, err := os.Open(filepath.Join(viper.GetString("file.directory"), t.Name()))
+
+		fd, err := os.Open(t.GetFullName())
 		if err == nil {
 			if _, err := io.Copy(md5Writer, fd); err == nil {
 				appendToMap(m, hex.EncodeToString(md5Writer.Sum(nil)), t)
@@ -66,5 +64,5 @@ func (mg *MD5Grouper) Group(s []Type) (m map[Any][]Type) {
 
 	mg.wg.Wait()
 
-	return m
+	return dedup(m)
 }

@@ -1,8 +1,8 @@
 package file
 
 import (
-	"io/fs"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/viper"
 )
@@ -12,16 +12,18 @@ import (
 //
 // Only these whose type is regular file will be
 // filled into fileList.
-func List(path string, fileList *[]fs.DirEntry) {
-	newFileList, _ := os.ReadDir(path)
+func List(fileList *[]FileInfo, paths ...string) {
+	for _, path := range paths {
+		newFileList, _ := os.ReadDir(path)
 
-	for _, f := range newFileList {
-		if f.Type().IsRegular() { // All symbol links will be ignored.
-			*fileList = append(*fileList, f)
-		} else if f.IsDir() && viper.GetBool("file.recursive") {
-			// f.IsDir() will not follow a
-			// symbol link links a directory.
-			List(f.Name(), fileList)
+		for _, f := range newFileList {
+			if f.Type().IsRegular() { // All non-regular files will be ignored.
+				*fileList = append(*fileList, FileInfo{path, f})
+			} else if f.IsDir() && viper.GetBool("file.recursive") {
+				// f.IsDir() will not follow a
+				// symbol link links a directory.
+				List(fileList, filepath.Join(path, f.Name()))
+			}
 		}
 	}
 }

@@ -1,9 +1,11 @@
 package group
 
-import "io/fs"
+import (
+	"github.com/YibangHeng/same/file"
+)
 
 type Any = interface{}
-type Type = fs.DirEntry
+type Type = file.FileInfo
 
 type Grouper interface {
 	// Group groups elements in slice by keys.

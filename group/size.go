@@ -17,9 +17,8 @@ func (_ *SizeGrouper) Group(s []Type) (m map[Any][]Type) {
 	m = make(map[Any][]Type)
 
 	for _, t := range s {
-		deInfo, _ := t.Info()
-		appendToMap(m, deInfo.Size(), t)
+		appendToMap(m, t.GetSize(), t)
 	}
 
-	return m
+	return dedup(m)
 }
