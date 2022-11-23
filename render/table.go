@@ -33,6 +33,10 @@ func trunc(a Any) string {
 
 func Table(m map[Any][]Type, keys string) {
 	tb := table.NewWriter()
+	tb.SetStyle(table.Style{
+		Box:     table.BoxStyle{MiddleVertical: "  "},
+		Options: table.Options{SeparateColumns: true},
+	})
 	tb.AppendHeader(table.Row{keys, "FILES"})
 
 	tb.SetColumnConfigs([]table.ColumnConfig{
