@@ -1,6 +1,7 @@
 package render
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/jedib0t/go-pretty/v6/table"
@@ -32,6 +33,11 @@ func trunc(a Any) string {
 }
 
 func Table(m map[Any][]Type, keys string) {
+	if len(m) == 0 {
+		fmt.Fprint(os.Stdout, "No same file found\n")
+		return
+	}
+
 	tb := table.NewWriter()
 	tb.SetStyle(table.Style{
 		Box:     table.BoxStyle{MiddleVertical: "  "},
