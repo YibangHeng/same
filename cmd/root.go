@@ -29,7 +29,7 @@ func root(cmd *cobra.Command, args []string) {
 	}
 
 	// Find files with same md5 value and render.
-	render.Table(new(group.MD5Grouper).Group(fileList), "MD5")
+	render.Render(new(group.MD5Grouper).Group(fileList))
 }
 
 var rootCmd = &cobra.Command{
@@ -52,12 +52,14 @@ func init() {
 	rootCmd.Flags().BoolP("recursive", "r", false, "Scan files recursively")
 
 	// Format.
+	rootCmd.Flags().BoolP("json", "j", false, "Print in JSON format")
 	rootCmd.Flags().Bool("no-trunc", false, "Do not truncate output")
 
-	// Help
+	// Help.
 	rootCmd.Flags().BoolP("version", "v", false, "Display version")
 	rootCmd.Flags().BoolP("help", "h", false, "Display help")
 
 	_ = viper.BindPFlag("file.recursive", rootCmd.Flag("recursive"))
+	_ = viper.BindPFlag("format.json", rootCmd.Flag("json"))
 	_ = viper.BindPFlag("format.no-trunc", rootCmd.Flag("no-trunc"))
 }
