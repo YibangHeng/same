@@ -6,9 +6,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/YibangHeng/same/file"
-	"github.com/YibangHeng/same/group"
-	"github.com/YibangHeng/same/render"
+	"github.com/yibangheng/same/file"
+	"github.com/yibangheng/same/group"
+	"github.com/yibangheng/same/render"
 )
 
 func root(cmd *cobra.Command, args []string) {
@@ -33,11 +33,12 @@ func root(cmd *cobra.Command, args []string) {
 }
 
 var rootCmd = &cobra.Command{
-	Use:     "same",
-	Short:   "Scan the same files in the folder",
-	Long:    `Scan the same files in the folder.`,
-	Version: "v0.1.0-dev",
-	Run:     root,
+	Use:                   "same [FLAG]... [DIRECTORY]...",
+	DisableFlagsInUseLine: true,
+	Short:                 "Find same files in folder(s)",
+	Long:                  `Find same files in folder(s).`,
+	Version:               "v0.1.0-dev",
+	Run:                   root,
 }
 
 func Execute() {

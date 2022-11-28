@@ -1,4 +1,4 @@
-module github.com/YibangHeng/same
+module github.com/yibangheng/same
 
 go 1.18
 

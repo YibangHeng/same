@@ -1,7 +1,7 @@
 package group
 
 import (
-	"github.com/YibangHeng/same/file"
+	"github.com/yibangheng/same/file"
 )
 
 type Any = interface{}

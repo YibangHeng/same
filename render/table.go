@@ -8,7 +8,7 @@ import (
 	"github.com/ozgio/strutil"
 	"github.com/spf13/viper"
 
-	"github.com/YibangHeng/same/group"
+	"github.com/yibangheng/same/group"
 )
 
 type Any = group.Any
