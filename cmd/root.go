@@ -18,7 +18,7 @@ func root(cmd *cobra.Command, args []string) {
 	}
 
 	// Get all files.
-	var fileList []file.FileInfo
+	var fileList []file.EntryInfo
 	file.List(&fileList, args...)
 
 	// Find files with same size first.

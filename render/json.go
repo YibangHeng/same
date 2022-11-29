@@ -3,7 +3,10 @@ package render
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"sync"
+
+	"github.com/yibangheng/same/file"
 )
 
 // muAppendToMap protects map in appendToMap.
@@ -30,7 +33,7 @@ func appendToMap(m map[string][]string, key string, t string) {
 	m[key] = s // If a new underlying array is allocated.
 }
 
-func JSON(m map[Any][]Type) {
+func JSON(m map[file.Any][]file.EntryInfoType) {
 	// Convert map[Any][]Type to
 	// map[string][]string since type
 	// map[Any][]Type is unsupported in
@@ -46,5 +49,5 @@ func JSON(m map[Any][]Type) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%s\n", b)
+	fmt.Fprintf(os.Stdout, "%s\n", b)
 }

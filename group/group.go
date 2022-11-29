@@ -4,9 +4,6 @@ import (
 	"github.com/yibangheng/same/file"
 )
 
-type Any = interface{}
-type Type = file.FileInfo
-
 type Grouper interface {
 	// Group groups elements in slice by keys.
 	//
@@ -16,9 +13,9 @@ type Grouper interface {
 	//
 	// Group should return nil only if the slice
 	// is nil or has no element.
-	Group([]Type) map[Any][]Type
+	Group([]file.EntryInfoType) map[file.Any][]file.EntryInfoType
 }
 
 // Belows are implementations of Grouper:
-var _ Grouper = new(SizeGrouper)
-var _ Grouper = new(MD5Grouper)
+var _ Grouper = (*SizeGrouper)(nil)
+var _ Grouper = (*MD5Grouper)(nil)

@@ -1,5 +1,7 @@
 package group
 
+import "github.com/yibangheng/same/file"
+
 type SizeGrouper struct{}
 
 // Group groups elements by file size. The keys
@@ -9,12 +11,12 @@ type SizeGrouper struct{}
 // s should not contain any non-regular files.
 // Any files whose info cannot be retrieved will
 // be considered 0 byte.
-func (_ *SizeGrouper) Group(s []Type) (m map[Any][]Type) {
+func (_ *SizeGrouper) Group(s []file.EntryInfoType) map[file.Any][]file.EntryInfoType {
 	if len(s) == 0 {
 		return nil
 	}
 
-	m = make(map[Any][]Type)
+	m := make(map[file.Any][]file.EntryInfoType)
 
 	for _, t := range s {
 		appendToMap(m, t.GetSize(), t)

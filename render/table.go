@@ -7,12 +7,8 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/ozgio/strutil"
 	"github.com/spf13/viper"
-
-	"github.com/yibangheng/same/group"
+	"github.com/yibangheng/same/file"
 )
-
-type Any = group.Any
-type Type = group.Type
 
 var (
 	keyLength = 5
@@ -24,7 +20,7 @@ var (
 //
 // If --no-trunc specified, string will also be
 // as it is.
-func trunc(a Any) string {
+func trunc(a file.Any) string {
 	if str, ok := a.(string); ok && !viper.GetBool("format.no-trunc") {
 		return strutil.Summary(str, keyLength, emptyTail)
 	} else {
@@ -32,7 +28,7 @@ func trunc(a Any) string {
 	}
 }
 
-func Table(m map[Any][]Type, keys string) {
+func Table(m map[file.Any][]file.EntryInfoType, keys string) {
 	if len(m) == 0 {
 		fmt.Fprint(os.Stdout, "No same file found\n")
 		return

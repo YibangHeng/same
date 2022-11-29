@@ -7,14 +7,16 @@ import (
 	"os"
 	"runtime"
 	"sync"
+
+	"github.com/yibangheng/same/file"
 )
 
 type MD5Grouper struct {
-	fileIn chan Type
+	fileIn chan file.EntryInfoType
 	wg     sync.WaitGroup
 }
 
-func (mg *MD5Grouper) md5(m map[Any][]Type) {
+func (mg *MD5Grouper) md5(m map[file.Any][]file.EntryInfoType) {
 	md5Writer := md5.New()
 	for t := range mg.fileIn {
 		md5Writer.Reset()
@@ -37,14 +39,14 @@ func (mg *MD5Grouper) md5(m map[Any][]Type) {
 // s should not contain any non-regular files.
 // Any files cannot read will be considered
 // empty files.
-func (mg *MD5Grouper) Group(s []Type) (m map[Any][]Type) {
+func (mg *MD5Grouper) Group(s []file.EntryInfoType) map[file.Any][]file.EntryInfoType {
 	if len(s) == 0 {
 		return nil
 	}
 
-	mg.fileIn = make(chan Type)
+	mg.fileIn = make(chan file.EntryInfoType)
 
-	m = make(map[Any][]Type)
+	m := make(map[file.Any][]file.EntryInfoType)
 
 	// The most efficient number of goroutines
 	// on machine.

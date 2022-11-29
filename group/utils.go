@@ -2,6 +2,8 @@ package group
 
 import (
 	"sync"
+
+	"github.com/yibangheng/same/file"
 )
 
 // muAppendToMap protects map in appendToMap.
@@ -11,7 +13,7 @@ var muAppendToMap sync.Mutex
 // with key in m.
 //
 // If m is nil, appendToMap do nothing.
-func appendToMap(m map[Any][]Type, key Any, t Type) {
+func appendToMap(m map[file.Any][]file.EntryInfoType, key file.Any, t file.EntryInfoType) {
 	if m == nil {
 		return
 	}
@@ -21,7 +23,7 @@ func appendToMap(m map[Any][]Type, key Any, t Type) {
 
 	s, ok := m[key]
 	if !ok {
-		s = make([]Type, 0)
+		s = make([]file.EntryInfoType, 0)
 	}
 
 	s = append(s, t)
@@ -35,7 +37,7 @@ var muDedup sync.Mutex
 // or less elements and return itself.
 //
 // If m is nil, dedup do nothing.
-func dedup(m map[Any][]Type) map[Any][]Type {
+func dedup(m map[file.Any][]file.EntryInfoType) map[file.Any][]file.EntryInfoType {
 	if m == nil {
 		return nil
 	}

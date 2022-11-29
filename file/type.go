@@ -5,26 +5,29 @@ import (
 	"path/filepath"
 )
 
-// FileInfo contains the info of file, such as
+// EntryInfo contains the info of file, such as
 // file type, full path, etc.
-type FileInfo struct {
+type EntryInfo struct {
 	rootFolder string
 	dirEntry   fs.DirEntry
 }
 
-func (fi *FileInfo) GetName() string {
+func (fi *EntryInfo) GetName() string {
 	return fi.dirEntry.Name()
 }
 
-func (fi *FileInfo) GetRelativeName() string {
+func (fi *EntryInfo) GetRelativeName() string {
 	return filepath.Join(fi.rootFolder, fi.dirEntry.Name())
 }
 
-func (fi *FileInfo) GetFullName() string {
+func (fi *EntryInfo) GetFullName() string {
 	return filepath.Join(fi.rootFolder, fi.dirEntry.Name())
 }
 
-func (fi *FileInfo) GetSize() int64 {
+func (fi *EntryInfo) GetSize() int64 {
 	i, _ := fi.dirEntry.Info()
 	return i.Size()
 }
+
+type Any = interface{}
+type EntryInfoType = EntryInfo
