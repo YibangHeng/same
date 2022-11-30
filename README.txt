@@ -22,6 +22,9 @@ FLAGS
     -h, --help
             Display help.
 
+        --ignore-empty-file
+            Do not count empty file.
+
     -j, --json
             Print results in JSON format.
 

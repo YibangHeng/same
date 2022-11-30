@@ -1,6 +1,9 @@
 package group
 
-import "github.com/yibangheng/same/file"
+import (
+	"github.com/spf13/viper"
+	"github.com/yibangheng/same/file"
+)
 
 type SizeGrouper struct{}
 
@@ -19,7 +22,9 @@ func (_ *SizeGrouper) Group(s []file.EntryInfoType) map[file.Any][]file.EntryInf
 	m := make(map[file.Any][]file.EntryInfoType)
 
 	for _, t := range s {
-		appendToMap(m, t.GetSize(), t)
+		if t.GetSize() != 0 || !viper.GetBool("file.ignore-empty-file") {
+			appendToMap(m, t.GetSize(), t)
+		}
 	}
 
 	return dedup(m)

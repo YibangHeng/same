@@ -51,6 +51,7 @@ func Execute() {
 func init() {
 	// File.
 	rootCmd.Flags().BoolP("recursive", "r", false, "Scan files recursively")
+	rootCmd.Flags().Bool("ignore-empty-file", false, "Do not count empty file")
 
 	// Format.
 	rootCmd.Flags().BoolP("json", "j", false, "Print in JSON format")
@@ -61,6 +62,7 @@ func init() {
 	rootCmd.Flags().BoolP("help", "h", false, "Display help")
 
 	_ = viper.BindPFlag("file.recursive", rootCmd.Flag("recursive"))
+	_ = viper.BindPFlag("file.ignore-empty-file", rootCmd.Flag("ignore-empty-file"))
 	_ = viper.BindPFlag("format.json", rootCmd.Flag("json"))
 	_ = viper.BindPFlag("format.no-trunc", rootCmd.Flag("no-trunc"))
 }
