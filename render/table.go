@@ -30,7 +30,11 @@ func trunc(a file.Any) string {
 
 func Table(m map[file.Any][]file.EntryInfoType, keys string) {
 	if len(m) == 0 {
-		fmt.Fprint(os.Stdout, "No same file found\n")
+		if viper.GetBool("file.recursive") {
+			fmt.Fprint(os.Stdout, "No same file found.\n")
+		} else {
+			fmt.Fprint(os.Stdout, "No same file found. Did you forget to use -r to scan sub folders?\n")
+		}
 		return
 	}
 
