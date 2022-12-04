@@ -65,4 +65,7 @@ func init() {
 	_ = viper.BindPFlag("file.ignore-empty-file", rootCmd.Flag("ignore-empty-file"))
 	_ = viper.BindPFlag("format.json", rootCmd.Flag("json"))
 	_ = viper.BindPFlag("format.no-trunc", rootCmd.Flag("no-trunc"))
+
+	// Version.
+	rootCmd.SetVersionTemplate(`{{printf "%s" .Version}}{{"\n"}}`)
 }
