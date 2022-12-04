@@ -37,7 +37,7 @@ var rootCmd = &cobra.Command{
 	DisableFlagsInUseLine: true,
 	Short:                 "Find same files in folder(s)",
 	Long:                  `Find same files in folder(s).`,
-	Version:               "v0.1.0",
+	Version:               "v0.1.1",
 	Run:                   root,
 }
 
