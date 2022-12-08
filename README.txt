@@ -15,7 +15,7 @@ INSTALL
     1. If you have golang installed, use 
        `go install github.com/yibangheng/same@latest`.
 
-    2. Download the binary directly at
+    2. Or download the binary directly at
        https://github.com/yibangheng/same/releases.
 
 FLAGS
